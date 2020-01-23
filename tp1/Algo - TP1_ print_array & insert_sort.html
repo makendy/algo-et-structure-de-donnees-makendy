@@ -1,0 +1,674 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0031)https://algo.lrde.epita.fr/t/1/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Algo - TP1: print_array &amp; insert_sort</title>
+<link href="./Algo - TP1_ print_array &amp; insert_sort_files/site.css" rel="stylesheet" type="text/css" media="screen">
+
+<script type="text/javascript" src="./Algo - TP1_ print_array &amp; insert_sort_files/MathJax.js.téléchargement"></script><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+
+<style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<div id="page-wrapper">
+    
+    <div id="header">
+        <div id="menu">
+            <ul>
+		<li>Makendy Piton</li>
+
+                <li><a href="https://algo.lrde.epita.fr/accounts/logout/">Logout</a></li>
+
+            </ul>
+        </div>
+        <h1><a href="https://algo.lrde.epita.fr/">TP1: print_array &amp; insert_sort</a></h1>
+    </div>
+    
+    <div id="page">
+        <div id="content">
+            
+
+<p>
+In all upcoming practicals, we shall deal with integer arrays.  Today
+we start by writing a pretty-printing function before coding a sorting
+algorithm.
+</p>
+
+<p>
+For most of the exercises, your task will be to write one or several C
+functions, to test it on your own (at least with the examples given in
+the subject), and then run your function through a test program that
+we give you.  This test program is just a <code>main()</code> function that calls
+the function you wrote, and that generates a file containing an
+execution trace.  Submit the resulting file to check that the result
+is correct, and get points.
+</p>
+
+<p>
+If your submitted trace is incorrect, you will be shown a diff with
+the expected values to help debug your code.  You can then fix your
+program, run it again, and submit the new (and hopefully correct)
+trace.  For each question you have 10 (ten!) tries to make correct
+submission. In other words, if any of your first ten submissions is
+correct, you will score all points for the question.  Starting with
+the 11th submission, your score for this question will be divided by 2
+each time you submit: this is to force you to think (versus twiddling
+the code randomly until it works).
+</p>
+
+<p>
+All the functions you write for this session should be stored in a
+file named <code>tp1.c</code>.  It is OK if you add some <code>main()</code> function in
+this file to perform your own tests, or you can do those tests from
+another file if you prefer.  In addition to the traces of each
+exercise, you will need to submit the complete <code>tp1.c</code> before the end
+the day.
+</p>
+
+<p>
+If your <code>main()</code> is in <code>tp1.c</code>, compile with: <code>gcc -std=c99 -Wall -Wextra
+tp1.c -lm -O2 -o tp1</code> then run <code>./tp1</code>.
+</p>
+
+<p>
+There is <b>no</b> coding standard to follow, but if you ever ask a teacher
+for help, at least indent your code first.  You can use any function
+you want from the standard library (unless of course this is a
+function we are asking your to reimplement).  The following functions
+might come handy today: <code>log10</code>, <code>fabs</code>, <code>fprintf</code>, <code>fputc</code>.
+</p>
+
+<div id="outline-container-org275517c" class="outline-2">
+<h2 id="org275517c"><span class="section-number-2">1</span> Compute the width of an integer</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Implement the following function
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">int_width</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span>);
+</pre>
+</div>
+
+<p>
+It takes an integer and returns the width in characters of its decimal representation.
+This width should account for the sign in case the integer is negative.
+</p>
+
+<p>
+The <code>log10()</code> function, declared in <code>math.h</code> can be useful (but you
+can also do without, there are many ways to compute this width); in
+this case, pass the <code>-lm</code> option to <code>gcc</code> to link your code with the
+mathematical library.
+</p>
+
+<p>
+Here is an example of execution:
+</p>
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = { -42, -1, 0, 13, 9999, 10000, 10001 };
+<span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt; <span style="font-weight: bold;">sizeof</span>(a) / <span style="font-weight: bold;">sizeof</span>(*a); ++i)
+  printf(<span style="font-style: italic;">"int_width(%d) == %d\n"</span>, a[i], int_width(a[i]));
+</pre>
+</div>
+
+<pre class="example">int_width(-42) == 3
+int_width(-1) == 2
+int_width(0) == 1
+int_width(13) == 2
+int_width(9999) == 4
+int_width(10000) == 5
+int_width(10001) == 5
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+Make sure your function is defined in <code>tp1.c</code>.  In the same directory,
+download <a href="https://algo.lrde.epita.fr/static/tp1trace.c"><code>tp1trace.c</code></a>, then compile it and execute it as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh" id="org5c7d08d">gcc -DQ=1 -std=c99 -Wall -Wextra tp1trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+
+<p>
+If compilation fails with an error such as "<code>In function
+‘no__main’: control reaches end of non-void function</code>", it means that
+the <code>main()</code> function in <code>tp1.c</code> (and that has been renamed to <code>no__main</code> by <code>tp1trace.c</code>)
+declares returning an <code>int</code> but does not contain a <code>return</code> statement: add one.
+</p>
+
+<p>
+If everything goes well, you should obtain the following message after
+the execution of <code>./trace</code>:
+</p>
+
+<pre class="example">please submit 'tp1q1.trace'
+</pre>
+
+<p>
+Submit this file using the following form (or any form on any page,
+they are all alike).
+</p>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="eZVivdtGVtK3CbVpCXuhav91QeWR7rP3KMWNBhGuJDO0afCHnHvucuszPVybd7Rc">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-orgd434344" class="outline-2">
+<h2 id="orgd434344"><span class="section-number-2">2</span> Maximal width of the values in an array</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Augment <code>tp1.c</code> with the following function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">ints_width</span>(<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>);
+</pre>
+</div>
+
+<p>
+This function receives an array <code>tab</code> containing <code>count&gt;0</code> integers, and
+returns the width of the widest integer (from the <code>int_width()</code> point of view).
+</p>
+
+<p>
+You can write crappy and slow code if you want.  But if you want to be
+efficient (or if you have some form of self-esteem), try to not call
+<code>int_width()</code> more than twice.
+</p>
+
+<p>
+Example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = {
+  1, 2, 3, 4, 5, 6, 13, -35, 129, -4, 123, -4555, 1341, 2432, 111, 0, 1230
+};
+printf(<span style="font-style: italic;">"%d\n"</span>, ints_width(a, <span style="font-weight: bold;">sizeof</span>(a)/<span style="font-weight: bold;">sizeof</span>(*a)));
+a[3] = 99999999;
+printf(<span style="font-style: italic;">"%d\n"</span>, ints_width(a, <span style="font-weight: bold;">sizeof</span>(a)/<span style="font-weight: bold;">sizeof</span>(*a)));
+</pre>
+</div>
+
+<pre class="example">5
+8
+</pre>
+
+<p>
+The widest integer in the array is <code>-4555</code> (5 characters) before we
+put <code>9999999</code> (8 characters).
+</p>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same <a href="https://algo.lrde.epita.fr/static/tp1trace.c"><code>tp1trace.c</code></a> downloaded
+for the previous question.  Only <code>-DQ=2</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh" id="org4910bc8">gcc -DQ=2 -std=c99 -Wall -Wextra tp1trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp1q2.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="eZVivdtGVtK3CbVpCXuhav91QeWR7rP3KMWNBhGuJDO0afCHnHvucuszPVybd7Rc">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-orga29078f" class="outline-2">
+<h2 id="orga29078f"><span class="section-number-2">3</span> Printing an integer array</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Hint: read the entire question before you start coding.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">print_int_array</span>(<span style="font-weight: bold; text-decoration: underline;">FILE</span>* <span style="font-weight: bold; font-style: italic;">out</span>, <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>);
+</pre>
+</div>
+
+<p>
+We want to print, on the stream <code>out</code>, an integer array <code>tab</code> that
+contains <code>count&gt;0</code> integers.  The output format should respect
+the following constraints:
+</p>
+
+<ul class="org-ul">
+<li>All the integers in the array should be printed using the same width
+(the one returned by <code>ints_width()</code>), padding with spaces on the
+left as needed, and be separated from the previous integer on the same
+line by one extra space.</li>
+<li>The display should use up to 80 columns.  Any integer that would be
+displayed across column 81 (or later) should be displayed on the next
+line.</li>
+<li>At the start of each line, a number between brackets indicates the
+index of the first element on the line.  These indices (and their
+brackets) should also be aligned to the right, with extra spaces
+before the opening bracket as needed.  The width of this column of
+indices should be the width needed to display the last index
+of the table (i.e., <code>count - 1</code>), even if this index itself
+does not appear in the output.</li>
+</ul>
+
+<p>
+Please read this last point twice.
+</p>
+
+<p>
+Here are several examples:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = {
+  1, 2, 3, 4, 5, 6, 13, -35, 129, -4, 123, -4555, 1341, 2432, 111, 0, 1230
+};
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>[] = {
+  1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6,
+  1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6,
+  1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6,
+  1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6,
+  1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6,
+  1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6
+};
+puts(<span style="font-style: italic;">"-- a[]"</span>);
+print_int_array(stdout, a, <span style="font-weight: bold;">sizeof</span>(a)/<span style="font-weight: bold;">sizeof</span>(*a));
+puts(<span style="font-style: italic;">"\n-- b[]"</span>);
+print_int_array(stdout, b, <span style="font-weight: bold;">sizeof</span>(b)/<span style="font-weight: bold;">sizeof</span>(*b));
+puts(<span style="font-style: italic;">"\n-- b[] after b[8] = 123456"</span>);
+b[8] = 123456;
+print_int_array(stdout, b, <span style="font-weight: bold;">sizeof</span>(b)/<span style="font-weight: bold;">sizeof</span>(*b));
+puts(<span style="font-style: italic;">"\n-- a[0..9]"</span>);
+print_int_array(stdout, a, 10);
+puts(<span style="font-style: italic;">"\n-- a[0..10]"</span>);
+print_int_array(stdout, a, 11);
+</pre>
+</div>
+<pre class="example">-- a[]
+ [0]     1     2     3     4     5     6    13   -35   129    -4   123 -4555
+[12]  1341  2432   111     0  1230
+
+-- b[]
+ [0] 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2
+[38] 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6
+
+-- b[] after b[8] = 123456
+ [0]      1      2      3      4      5      6      1      2 123456      4
+[10]      5      6      1      2      3      4      5      6      1      2
+[20]      3      4      5      6      1      2      3      4      5      6
+[30]      1      2      3      4      5      6      1      2      3      4
+[40]      5      6      1      2      3      4      5      6      1      2
+[50]      3      4      5      6      1      2      3      4      5      6
+[60]      1      2      3      4      5      6      1      2      3      4
+[70]      5      6
+
+-- a[0..9]
+[0]   1   2   3   4   5   6  13 -35 129  -4
+
+-- a[0..10]
+ [0]   1   2   3   4   5   6  13 -35 129  -4 123
+</pre>
+
+<p>
+The first three examples show how columns are aligned depending on the
+values to display.  In the first example, the largest value is
+<code>-4555</code>, so all numbers are printed on 5 characters, with an extra
+space between each column of numbers.  In the next two examples (<code>b[]</code>
+before and after modifications), the numbers have only one digit
+initially so they can be printed in a compact way: the first line uses
+exactly 80 characters, without counting the final new line.  After
+<code>b[8]=12356</code>, the widest number requires 6 characters, so the display
+of the table takes more space.  Those lines use 74 characters, because
+adding an additional number would require 1 space plus 6 characters,
+therefore hitting the 81th column.
+</p>
+
+<p>
+The last two examples illustrate the rule for computing the width of
+the index column.  In the first array, the last index is 9, so the
+index column uses only 3 characters (2 brackets and 1 digit).
+In the second array, the last index is 10, so the index column uses 4
+characters (2 brackets, and up to 2 digits) even if no index with
+2 digits is actually ever printed.
+</p>
+
+<p>
+To simplify your code, please note that <code>fprintf()</code> has many options
+for formatting numbers.  Pay a special attention to the third line in
+this example, where the required width is specified as an argument:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C">fprintf(stdout, <span style="font-style: italic;">"before_%d_after\n"</span>, 1);
+fprintf(stdout, <span style="font-style: italic;">"before_%6d_after\n"</span>, 2);
+fprintf(stdout, <span style="font-style: italic;">"before_%*d_after\n"</span>, 6, 3);
+</pre>
+</div>
+
+<pre class="example">before_1_after
+before_     2_after
+before_     3_after
+</pre>
+
+<p>
+similar options exist for strings (and those strings could be empty…):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C">fprintf(stdout, <span style="font-style: italic;">"before_%s_after\n"</span>, <span style="font-style: italic;">"a1"</span>);
+fprintf(stdout, <span style="font-style: italic;">"before_%6s_after\n"</span>, <span style="font-style: italic;">"b2"</span>);
+fprintf(stdout, <span style="font-style: italic;">"before_%*s_after\n"</span>, 6, <span style="font-style: italic;">"c3"</span>);
+</pre>
+</div>
+
+<pre class="example">before_a1_after
+before_    b2_after
+before_    c3_after
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh" id="org7c8ea34">gcc -DQ=3 -std=c99 -Wall -Wextra tp1trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp1q3.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="eZVivdtGVtK3CbVpCXuhav91QeWR7rP3KMWNBhGuJDO0afCHnHvucuszPVybd7Rc">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-orgcfdb56c" class="outline-2">
+<h2 id="orgcfdb56c"><span class="section-number-2">4</span> Insertion Sort</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Write an insertion Sort procedure, in which <code>tab</code> has to be sorted in place, and in increasing order.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">insert_sort</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>);
+</pre>
+</div>
+
+<p>
+For instance:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = {
+  1, 2, 3, 4, 5, 6, 13, -35, 129, -4, 123, -4555, 1341, 2432, 111, 0, 1230
+};
+
+<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">asize</span> = <span style="font-weight: bold;">sizeof</span>(a)/<span style="font-weight: bold;">sizeof</span>(*a);
+puts(<span style="font-style: italic;">"before"</span>);
+print_int_array(stdout, a, asize);
+insert_sort(a, asize);
+puts(<span style="font-style: italic;">"after"</span>);
+print_int_array(stdout, a, asize);
+</pre>
+</div>
+
+<pre class="example">before
+ [0]     1     2     3     4     5     6    13   -35   129    -4   123 -4555
+[12]  1341  2432   111     0  1230
+after
+ [0] -4555   -35    -4     0     1     2     3     4     5     6    13   111
+[12]   123   129  1230  1341  2432
+</pre>
+
+<p>
+<b>Beware:</b> implement the algorithm from the <a href="http://www.lrde.epita.fr/~adl/ens/algo/algo.pdf">lecture</a>, in which the array is sorted from left to right, or the check performed in the next question will fail.
+You can also find a copy of this algorithm in <a href="http://www.lrde.epita.fr/~adl/ens/algo/tutalgo.pdf">the exercises for tomorrow's tutorial</a>.
+</p>
+
+<p>
+<b>There is nothing to submit for this question.</b> Just test your
+function before moving on to the next question.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0d4dfb2" class="outline-2">
+<h2 id="org0d4dfb2"><span class="section-number-2">5</span> Insertion Sort with a comparison function</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Starting from the previous <code>insert_sort()</code> as a base, create a new
+function <code>insert_sort_cmp()</code> that takes a comparison function as an
+argument.  This function <code>cmp(a,b)</code> returns -1, 0, or 1 if <code>a</code> is
+respectively less than, equal to, or greater than <code>b</code> in the
+desired order.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">insert_sort_cmp</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>));
+</pre>
+</div>
+
+<p>
+By changing the comparison function, you can change the order in which
+values are sorted.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">increasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   <span style="font-weight: bold;">if</span> (a &lt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &gt; b;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">decreasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   <span style="font-weight: bold;">if</span> (a &gt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &lt; b;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = {
+    1, 2, 3, 4, 5, 6, 13, -35, 129, -4, 123, -4555, 1341, 2432, 111, 0, 1230
+  };
+
+  <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">asize</span> = <span style="font-weight: bold;">sizeof</span>(a)/<span style="font-weight: bold;">sizeof</span>(*a);
+  puts(<span style="font-style: italic;">"original"</span>);
+  print_int_array(stdout, a, asize);
+  puts(<span style="font-style: italic;">"increasing"</span>);
+  insert_sort_cmp(a, asize, increasing);
+  print_int_array(stdout, a, asize);
+  puts(<span style="font-style: italic;">"decreasing"</span>);
+  insert_sort_cmp(a, asize, decreasing);
+  print_int_array(stdout, a, asize);
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<pre class="example">original
+ [0]     1     2     3     4     5     6    13   -35   129    -4   123 -4555
+[12]  1341  2432   111     0  1230
+increasing
+ [0] -4555   -35    -4     0     1     2     3     4     5     6    13   111
+[12]   123   129  1230  1341  2432
+decreasing
+ [0]  2432  1341  1230   129   123   111    13     6     5     4     3     2
+[12]     1     0    -4   -35 -4555
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The test program uses a different comparison function (so do not be
+surprised if the output array does not appear to be sorted), and also
+counts the number of comparisons made.  If your trace does not show
+the expected number of comparisons it could be because you forgot to
+call <code>cmp()</code> in your code, or because you did not implement the same
+algorithm as in the lecture.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh" id="org3a9c4ed">gcc -DQ=5 -std=c99 -Wall -Wextra tp1trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp1q5.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="eZVivdtGVtK3CbVpCXuhav91QeWR7rP3KMWNBhGuJDO0afCHnHvucuszPVybd7Rc">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-org711ed9e" class="outline-2">
+<h2 id="org711ed9e"><span class="section-number-2">6</span> Final Submission</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Upload a file named <code>tp1.c</code>, and containing at least the above five functions (it may contain more).
+</p>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="eZVivdtGVtK3CbVpCXuhav91QeWR7rP3KMWNBhGuJDO0afCHnHvucuszPVybd7Rc">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+</body></html>

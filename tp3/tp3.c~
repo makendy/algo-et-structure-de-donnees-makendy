@@ -1,0 +1,205 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
+#define MAX(A,B) ((A > B) ? A : B)
+
+unsigned int_width(int i)
+{
+  if(i >= 0 && i < 10)
+    return 1;
+  if(i >= -9 && i < 0)
+    return 2;
+
+  int r;
+  long int a = i;
+  long int q = 10;
+  unsigned cpt = 0;
+
+  if(a < 0)
+    {
+      cpt++;
+      a = -1 * a;
+    }
+
+  while(a != 0)
+    {
+      r = a % q;
+      if(a > 0)
+	a -= r;
+      else if(i < 0)
+	a += r;
+      cpt++;
+      q *= 10;
+    }
+  return cpt;
+}
+
+static int widest_number(int a, int b)
+{
+  if(a >= 0 && b >= 0)
+    {
+      if(a > b)
+	return a;
+      return b;
+    }
+  else if(a < 0 && b < 0)
+    {
+      if(a < b)
+	return a;
+      return b;
+    }
+  if(int_width(a) > int_width(b))
+    return a;
+  return b;
+}
+
+unsigned ints_width(const int* tab, unsigned count)
+{
+  int num = tab[0];
+
+  for(unsigned i = 1; i < count; i++)
+    {
+      num = widest_number(num, tab[i]);
+    }
+  return int_width(num);
+}
+
+void print_int_array(FILE* out, const int* tab, unsigned count)
+{
+  unsigned size_max = ints_width(tab, count);
+  unsigned n = int_width(count - 1) + 2;
+  unsigned index = n;
+  unsigned width;
+
+  for(unsigned i = 0; i < count; i++)
+    {
+      width = int_width(tab[i]);
+      if((index + size_max + 1) > 80)
+	{
+	  index = n;
+	  fprintf(out, "\n");
+	}
+      if(index == n)
+	{
+	  int k = int_width(i) + 2;
+	  for (unsigned j = k; j < n; j++)
+	    {
+	      fprintf(out, " ");
+	    }
+	  fprintf(out, "[%d]", i);
+	}
+      for (unsigned j = width; j < (size_max + 1); j++)
+	{
+	  fprintf(out, " ");
+	}
+      fprintf(out, "%d", tab[i]);
+      index += size_max + 1;
+    }
+  fprintf(out, "\n");
+}
+
+
+void heapify(int *tab, unsigned pos, unsigned n)
+{
+  unsigned l = 2 * pos + 1;
+  unsigned r = 2 * pos + 2;
+  unsigned largest;
+  if(l < n && tab[l] > tab[pos])
+    largest = l;
+  else
+    largest = pos;
+
+  if(r < n && tab[r] > tab[largest])
+    largest = r;
+
+  if(largest != pos)
+  {
+    int nb = tab[largest];
+    tab[largest] = tab[pos];
+    tab[pos] = nb;
+    heapify(tab, largest, n);
+  }
+}
+
+void make_heap(int *tab, unsigned n)
+{
+  for(unsigned i = n / 2 - 1; i > 0; i--)
+      heapify(tab, i, n);
+  heapify(tab, 0, n);
+}
+
+bool check_heap(int *heap, unsigned n)
+{
+    unsigned l;
+    unsigned r;
+    for(unsigned i = 0; i < n; i++)
+    {
+	   	l = 2 * i + 1;
+	   	r = 2 * i + 2;
+	   	if(r < n && heap[i] < heap[r])
+	   		return false;
+	   	if(l < n && heap[i] < heap[l])
+	   		return false;
+    }
+    return true;
+}
+
+static unsigned depth_heap(const int *heap, unsigned node, unsigned n)
+{
+    if(node >= n)
+    	return 0;
+    return 1 +  MAX(depth_heap(heap, 2 * node + 1, n), depth_heap(heap, 2 * node + 2, n));
+}
+
+void pretty_print_heap(FILE* out, const int* v, unsigned n)
+{
+	unsigned w = ints_width(v, n);
+	unsigned depth = depth_heap(v, 0, n);
+	unsigned t = (w + 1) * pow(2, depth - 1);
+	unsigned c;
+	unsigned index = 0;
+	unsigned s;
+	for(unsigned i = 0; i < depth; i++)
+	{
+	  c = pow(2, i);
+	  s = t / c - w;
+	  for(unsigned j = 0; j < c; j++)
+	  {
+	    if(index < n)
+	      {
+		if(j != 0)
+		  fprintf(out, "%*d", s, v[index]);
+		else
+		  fprintf(out, "%*d", s / 2, v[index]);
+	        index++;
+	      }
+	  }
+	  fprintf(out, "\n");
+	}
+}
+
+int main()
+{
+//-----------------------Exo 1-----------------------------
+/*
+  int a[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+   unsigned asize = sizeof(a) / sizeof(*a);
+   make_heap(a, asize);
+   puts("output:");
+   print_int_array(stdout, a, asize);*/
+
+//-------------------------Exo 2----------------------------------
+/*	int a[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+unsigned asize = sizeof(a) / sizeof(*a);
+printf("input is %sa heap\n", check_heap(a, asize) ? "" : "not ");
+make_heap(a, asize);
+printf("output is %sa heap\n", check_heap(a, asize) ? "" : "not ");*/
+  int a[] = { 16, 2, -3, 42, 54, 65, 73, 8, 90, 10, 11, 12, 13 };
+  unsigned asize = sizeof(a) / sizeof(*a);
+  make_heap(a, asize);
+  print_int_array(stdout, a, asize);
+  puts("Look Ma! I drew a tree!");
+  pretty_print_heap(stdout, a, asize);
+  return 0;
+}

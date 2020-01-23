@@ -1,0 +1,1096 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0031)https://algo.lrde.epita.fr/t/6/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Algo - TP6: Hashtable</title>
+<link href="./Algo - TP6_ Hashtable_files/site.css" rel="stylesheet" type="text/css" media="screen">
+
+<script type="text/javascript" src="./Algo - TP6_ Hashtable_files/MathJax.js.téléchargement"></script><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+
+<style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<div id="page-wrapper">
+    
+    <div id="header">
+        <div id="menu">
+            <ul>
+		<li>Makendy Piton</li>
+
+                <li><a href="https://algo.lrde.epita.fr/accounts/logout/">Logout</a></li>
+
+            </ul>
+        </div>
+        <h1><a href="https://algo.lrde.epita.fr/">TP6: Hashtable</a></h1>
+    </div>
+    
+    <div id="page">
+        <div id="content">
+            
+
+<p>
+The goal of the current practical is to build the histogram of all
+words contained in a given file. For this purpose we only consider
+files without punctuation. Note that all punctuation symbols can
+easily be removed from a file <code>myfile.txt</code> by applying the following
+command:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">tr -s <span style="font-style: italic;">'[:punct:]'</span> <span style="font-style: italic;">' '</span> &lt; myfile.txt
+</pre>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Simple display</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+All words to consider will be stored in an <code>char**</code> array. Write the
+following function that display one word per line in the given  output
+file.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">display_words</span>(<span style="font-weight: bold; text-decoration: underline;">FILE</span>* <span style="font-weight: bold; font-style: italic;">out</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">size</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>** <span style="font-weight: bold; font-style: italic;">words</span>);
+</pre>
+</div>
+
+<p>
+There is <b>no</b> coding standard to follow, but if you ever ask a teacher
+for help, at least indent your code first.  You can use any function
+you want from the standard library (unless of course this is a
+function we are asking you to reimplement).
+</p>
+
+
+<p>
+You can easily test your function using the below <code>main</code> function.
+If your <code>main()</code> is in <code>tp6.c</code>, compile with: <code>gcc -std=c99 -Wall -Wextra
+tp6.c -lm -O2 -o tp6</code> then run <code>./tp6</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">argc</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>** <span style="font-weight: bold; font-style: italic;">argv</span>)
+{
+  display_words(stdout, argc-1, argv+1);
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<p>
+And then run:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">./tp6 This is a pretty example
+</pre>
+</div>
+
+<p>
+You should obtain the following result:
+</p>
+
+<pre class="example">This
+is
+a
+pretty
+example
+</pre>
+
+<p>
+You can also test further by applying the previous command on
+a file <code>myfile.txt</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">./tp6 $(<span style="font-weight: bold;">tr</span> -s <span style="font-style: italic;">'[:punct:]'</span> <span style="font-style: italic;">' '</span> &lt; myfile.txt)
+</pre>
+</div>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+Make sure your function is defined in <code>tp6.c</code>.  In the same directory,
+download <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, then compile it and execute it as follows:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace1">gcc -DQ=1 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+
+<p>
+If compilation fails with an error such as "<code>In function ‘no__main’:
+control reaches end of non-void function</code>", it means that the <code>main()</code>
+function in <code>tp6.c</code> (and that has been renamed to <code>no__main</code> by
+<code>tp6trace.c</code>) declares returning an <code>int</code> but does not contain a
+<code>return</code> statement: add one.
+</p>
+
+<p>
+If everything goes well, you should obtain the following message after
+the execution of <code>./trace</code>:
+</p>
+
+<pre class="example">please submit 'tp6q1.trace'
+</pre>
+
+<p>
+Submit this file using the following form (or any form on any page,
+they are all alike).
+</p>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Basic Hashtable</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+First of all we need an hash function. Write an hash function that
+takes a word and computes the sum of all letters inside this word.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">bad_hash</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">word</span>);
+</pre>
+</div>
+
+<p>
+You can test your function with the example below and obtain:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">argc</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>** <span style="font-weight: bold; font-style: italic;">argv</span>)
+{
+  printf(<span style="font-style: italic;">"%u\n"</span>, bad_hash(<span style="font-style: italic;">"foo"</span>));
+  printf(<span style="font-style: italic;">"%u\n"</span>, bad_hash(<span style="font-style: italic;">"bar"</span>));
+  printf(<span style="font-style: italic;">"%u\n"</span>, bad_hash(<span style="font-style: italic;">"foobar"</span>));
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+
+<pre class="example">324
+309
+633
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=2</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace2">gcc -DQ=2 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q2.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+<p>
+We can now  build a fixed-sized hashtable. To perform this we define the
+two following structures. The first one <code>keyval</code> represents an element
+of the hashtable i.e. it will store words in field <code>key</code>, and occurrences
+in field <code>val</code>. The next pointer will be used to resolve collisions.
+The second structure, <code>ht</code>, defines an hashtable as an array of
+pointer of <code>keyval</code>. The member <code>size</code> represents the current size of
+the hashtable.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">keyval</span> {
+  <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">key</span>;
+  <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">val</span>;
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">keyval</span>* <span style="font-weight: bold; font-style: italic;">next</span>;
+};
+
+<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span> {
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">keyval</span>** <span style="font-weight: bold; font-style: italic;">table</span>;
+  <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">size</span>;
+};
+</pre>
+</div>
+
+<p>
+Write the two following functions that allocate and deallocate a new
+hashtable. Note that initially all buckets are set to NULL.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold;">ht_malloc</span>(<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">size</span>);
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">ht_free</span>(<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">table</span>);
+</pre>
+</div>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=3</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace3">gcc -DQ=3 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q3.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+
+<p>
+Write now a function that inserts an element into the hashtable. If
+this element (i.e. the field key of the struct keyval) is already in
+the hashtable, then the function returns a pointer over this
+element. If the element was not already in the hashtable, the function
+returns a pointer to the new allocated element. Note that this
+function takes a pointer to function to know how to hash an
+element. The bucket associated to a word <code>w</code> is given by
+<code>hash(w)%hashtable-&gt;size</code>. Also note that the new element must be
+inserted at the end of the collision list.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">keyval</span>* <span style="font-weight: bold;">ht_find_or_put</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">word</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">value</span>,
+                              <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">hashtable</span>,
+                              <span style="font-weight: bold; text-decoration: underline;">unsigned</span> (*<span style="font-weight: bold; font-style: italic;">hash</span>)(<span style="font-weight: bold; text-decoration: underline;">char</span>*));
+</pre>
+</div>
+
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=4</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace4">gcc -DQ=4 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q4.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+
+<p>
+You can now write a function <code>display</code> that displays all buckets of the
+hashtable that are not empty. Each bucket is displayed as following:
+(1) the index of the the bucket into brackets, (2) a tabulation and,
+(3) collision list. The prototype of this
+function is:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">ht_print</span>(<span style="font-weight: bold; text-decoration: underline;">FILE</span>* <span style="font-weight: bold; font-style: italic;">out</span>, <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">hashtable</span>)
+</pre>
+</div>
+
+<p>
+You can try it with the following main function.
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">argc</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>** <span style="font-weight: bold; font-style: italic;">argv</span>)
+{
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">table</span> = ht_malloc(10);
+  ht_find_or_put(<span style="font-style: italic;">"foo"</span>, 1,  table, bad_hash);
+  ht_find_or_put(<span style="font-style: italic;">"bar"</span>, 42, table, bad_hash);
+  printf(<span style="font-style: italic;">"------------ Dump table ------------\n"</span>);
+  ht_print(stdout, table);
+
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">keyval</span>* <span style="font-weight: bold; font-style: italic;">ptr</span> = ht_find_or_put(<span style="font-style: italic;">"foo"</span>, 12, table, bad_hash);
+  printf(<span style="font-style: italic;">"------------ Dump table ------------\n"</span>);
+  ht_print(stdout, table);
+
+  ptr-&gt;val = 21;
+  printf(<span style="font-style: italic;">"------------ Dump table ------------\n"</span>);
+  ht_print(stdout, table);
+
+  ht_find_or_put(<span style="font-style: italic;">"oof"</span>, 1,  table, bad_hash);
+  printf(<span style="font-style: italic;">"------------ Dump table ------------\n"</span>);
+  ht_print(stdout, table);
+
+  ht_free(table);
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<p>
+For the example above, the expected result is:
+</p>
+
+<pre class="example">------------ Dump table ------------
+Bucket[4]:      (foo,1)
+Bucket[9]:      (bar,42)
+------------ Dump table ------------
+Bucket[4]:      (foo,1)
+Bucket[9]:      (bar,42)
+------------ Dump table ------------
+Bucket[4]:      (foo,21)
+Bucket[9]:      (bar,42)
+------------ Dump table ------------
+Bucket[4]:      (foo,21) -&gt; (oof,1)
+Bucket[9]:      (bar,42)
+</pre>
+
+<p>
+Note that here we don't care if the output exceed 80 characters by row.
+</p>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=5</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace5">gcc -DQ=5 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q5.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+<p>
+Now we can compute the histogram of all the values in a file. Write
+the following function, that takes a <code>char** words</code> array containing all
+words (of size <code>words_size</code>), and <code>ht_size</code> the size of the hash table to allocate. This
+function must return a new allocated hashtable that contains the
+histogram of all values in <code>words</code>. The insertion uses the hash
+function <code>hash</code> given in parameter.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold;">compute_histogram</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>** <span style="font-weight: bold; font-style: italic;">words</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">words_size</span>,
+                             <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">ht_size</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> (*<span style="font-weight: bold; font-style: italic;">hash</span>)(<span style="font-weight: bold; text-decoration: underline;">char</span>*))
+</pre>
+</div>
+
+<p>
+You can test your function with the following lines:
+</p>
+<pre class="example">char* words[] = {"foo", "oof", "bar", "rab", "foorab", "barfoo",
+                  "oorabf", "foo"};
+ struct ht* table = compute_histogram(words, 8, 100, bad_hash);
+ ht_print(stdout, table);
+</pre>
+
+<p>
+And obtain the following results.
+</p>
+
+<pre class="example">Bucket[9]:	(bar,1) -&gt; (rab,1)
+Bucket[24]:	(foo,2) -&gt; (oof,1)
+Bucket[33]:	(foorab,1) -&gt; (barfoo,1) -&gt; (oorabf,1)
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=6</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace6">gcc -DQ=6 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q6.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Variations on the hash function</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In the previous section we used <code>bad_hash</code> as the hashing function. This
+is not a good hash function. Indeed,  it provides a lot
+of collision for anagrams (e.g. "film" and "milf"). Nonetheless the
+<code>bad_hash</code> function has been described in <b>The C programming language</b>
+by  Brian Kernighan and Dennis Ritchie as following: "This is not the best
+possible algorithm, but it has the merit of extreme simplicity.".
+</p>
+
+<p>
+In this section we will try various hash functions.
+</p>
+
+<p>
+The XOR hash is an algorithm commonly suggested by
+textbooks as an alternative of the previous algorithm.
+Instead of adding together the bytes of an object as the
+additive hash does, the XOR hash repeatedly folds the bytes together
+to produce a seemingly random hash value.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">xor_hash</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">word</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-C">printf(<span style="font-style: italic;">"%s : %u\n"</span>, <span style="font-style: italic;">"foo"</span>, xor_hash(<span style="font-style: italic;">"foo"</span>));
+printf(<span style="font-style: italic;">"%s : %u\n"</span>, <span style="font-style: italic;">"ofo"</span>, xor_hash(<span style="font-style: italic;">"ofo"</span>));
+printf(<span style="font-style: italic;">"%s : %u\n"</span>, <span style="font-style: italic;">"bar"</span>, xor_hash(<span style="font-style: italic;">"bar"</span>));
+printf(<span style="font-style: italic;">"%s : %u\n"</span>, <span style="font-style: italic;">"foobar"</span>, xor_hash(<span style="font-style: italic;">"foobar"</span>));
+</pre>
+</div>
+
+<p>
+You can test your function with the code above to obtain:
+</p>
+
+<pre class="example">foo : 102
+ofo : 102
+bar : 113
+foobar : 23
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=7</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace7">gcc -DQ=7 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q7.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+
+<p>
+Nonetheless this algorithm also produces collisions for anagrams.
+These collisions can be reduced when combining XOR hash to additive hash.
+The algorithm first XOR the current character with the current hash
+value. Then the previous value is added to the current character: this
+give a new hash value that can be used to process the next character.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">xor_add_hash</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">word</span>);
+</pre>
+</div>
+
+<p>
+On the example above we obtain:
+</p>
+
+<pre class="example">foo : 492
+ofo : 480
+bar : 486
+foobar : 498
+</pre>
+
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=8</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace8">gcc -DQ=8 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q8.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+
+
+
+<p>
+The previous hash function  reduces scollisions but also reduce the
+range of values. We will then replace the XOR operation of the
+<code>xor_add_hash</code> by a multiplication by 33 of the current hash value.
+Dan Bernstein created this algorithm and posted it in
+a comp.lang.c while he wrote djbdns, a DNS implementation.
+It is also  known by many as the Chris Torek hash because Chris
+went a long way toward popularizing. Write the <code>djb_hash</code> function
+that implement this algorithm.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">djb_hash</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">word</span>);
+</pre>
+</div>
+
+<p>
+You should obtain the following results:
+</p>
+
+<pre class="example">foo : 114852
+ofo : 124356
+bar : 110037
+foobar : 4127546361
+</pre>
+
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=9</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace9">gcc -DQ=9 -std=c99 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q9.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+
+<p>
+A very similar algorithm exists and is called FVN hash in honor of
+the creators Fowler-Noll-Vo. One of FNV's key advantages is that it is
+very simple to implement. Initially the hash value is set to
+2166136261 (a prime number). Then for each letter, the hash value is
+multiplied by 16777619 and then XORed with the current letter.
+Write this function.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">fvn_hash</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">word</span>);
+</pre>
+</div>
+
+<p>
+You should obtain following results:
+</p>
+<pre class="example">foo : 1083137555
+ofo : 930712173
+bar : 513390112
+foobar : 837857890
+</pre>
+
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=10</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace10">gcc -DQ=10 -std=c1010 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q10.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+<p>
+You can now evaluate the different hash function on a large file. We
+want to detect the best one. To do this implement a function that returns the
+maximum  number of collisions in an hashtable
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">nb_collisions</span>(<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">hashtable</span>);
+</pre>
+</div>
+
+<p>
+For instance, you can test your function with the following lines:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">words</span>[] = {<span style="font-style: italic;">"foo"</span>, <span style="font-style: italic;">"oof"</span>, <span style="font-style: italic;">"bar"</span>, <span style="font-style: italic;">"rab"</span>, <span style="font-style: italic;">"foorab"</span>, <span style="font-style: italic;">"barfoo"</span>,
+                 <span style="font-style: italic;">"oorabf"</span>, <span style="font-style: italic;">"foo"</span>};
+<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">table</span>;
+table = compute_histogram(words, 8, 100, bad_hash);
+ht_print(stdout, table);
+printf(<span style="font-style: italic;">"nbcol : %d\n"</span>, nb_collisions(table));
+ht_free(table);
+table = compute_histogram(words, 8, 100, fvn_hash);
+ht_print(stdout, table);
+printf(<span style="font-style: italic;">"nbcol : %d\n"</span>, nb_collisions(table));
+ht_free(table);
+</pre>
+</div>
+
+<p>
+And obtain:
+</p>
+
+<pre class="example">Bucket[9]:	(bar,1) -&gt; (rab,1)
+Bucket[24]:	(foo,2) -&gt; (oof,1)
+Bucket[33]:	(foorab,1) -&gt; (barfoo,1) -&gt; (oorabf,1)
+nbcol : 3
+Bucket[12]:	(bar,1)
+Bucket[16]:	(barfoo,1)
+Bucket[24]:	(oorabf,1)
+Bucket[55]:	(foo,2)
+Bucket[58]:	(foorab,1)
+Bucket[67]:	(oof,1)
+Bucket[80]:	(rab,1)
+nbcol : 1
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=11</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace11">gcc -DQ=11 -std=c11 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q11.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> More complicated hashtable</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+In this section we want to build another strategy of insertion into
+the hashtable. When a collision happens, we will find the first empty bucket
+into the hashtable and use it to store the new element. Write the
+function that returns the index of the first empty bucket, or -1 if no
+such bucket exist.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">find_empty_bucket</span>(<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>*);
+</pre>
+</div>
+
+<p>
+You can still use your previous insert function to test
+<code>find_empty_bucket</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">mht</span> = ht_malloc(1);
+printf(<span style="font-style: italic;">"%d\n"</span>, find_empty_bucket(mht));
+ht_find_or_put(<span style="font-style: italic;">"hello"</span>, 0, mht, bad_hash);
+printf(<span style="font-style: italic;">"%d\n"</span>, find_empty_bucket(mht));
+</pre>
+</div>
+
+<p>
+The above example will then produce:
+</p>
+
+<pre class="example">0
+-1
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=11</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace12">gcc -DQ=11 -std=c11 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q12.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+
+<p>
+When we want to insert a new element, we proceed as previously: (1) we
+compute the hash value of the associated element, and (2) we look
+among all element in collision if the new element already exist. If
+the element does not exist, we must allocate it and insert it into the
+collision list (using field <code>next</code> of struct <code>keyval</code>). The new room
+for this element is given by calling <code>find_empty_bucket</code>. If it
+returns -1, we must reallocate and rehash all values in the hash
+table.
+</p>
+
+<p>
+Write a new insert function, that doubles the size of the hashtable
+every time a reallocation is needed. You will also define a new
+function for the deletion of the table since the old one may be outdated
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">keyval</span>* <span style="font-weight: bold;">ht_find_or_put2</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">word</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">value</span>,
+                               <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">hashtable</span>,
+                               <span style="font-weight: bold; text-decoration: underline;">unsigned</span> (*<span style="font-weight: bold; font-style: italic;">hash</span>)(<span style="font-weight: bold; text-decoration: underline;">char</span>*));
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">ht_free2</span>(<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">ht</span>* <span style="font-weight: bold; font-style: italic;">table</span>);
+</pre>
+</div>
+
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+The trace should be generated with the same  <a href="https://algo.lrde.epita.fr/static/tp6trace.c"><code>tp6trace.c</code></a>, downloaded
+for the previous question.  Only <code>-DQ=11</code> indicates that you are
+testing the second question.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace13">gcc -DQ=11 -std=c11 -Wall -Wextra tp6trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp6q13.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+
+<p>
+Explain why <code>find_empty_bucket</code> is not efficient. How can we make it
+more efficient? How can you write a procedure that, for a given word,
+remove the associated <code>keyval</code> element.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Final Submission</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Upload a file named <code>tp6.c</code>, and containing at least the above five functions (it may contain more).
+</p>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="Y0VUESAlQMtHHK24qsE5PQnigkepXmAUanntw1zAjjf73w2LEaL9xCnEcj4giqAr">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+</body></html>

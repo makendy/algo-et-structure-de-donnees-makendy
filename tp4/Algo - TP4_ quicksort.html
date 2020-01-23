@@ -1,0 +1,462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0031)https://algo.lrde.epita.fr/t/4/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Algo - TP4: quicksort</title>
+<link href="./Algo - TP4_ quicksort_files/site.css" rel="stylesheet" type="text/css" media="screen">
+
+<script type="text/javascript" src="./Algo - TP4_ quicksort_files/MathJax.js.téléchargement"></script><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+
+<style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<div id="page-wrapper">
+    
+    <div id="header">
+        <div id="menu">
+            <ul>
+		<li>Makendy Piton</li>
+
+                <li><a href="https://algo.lrde.epita.fr/accounts/logout/">Logout</a></li>
+
+            </ul>
+        </div>
+        <h1><a href="https://algo.lrde.epita.fr/">TP4: quicksort</a></h1>
+    </div>
+    
+    <div id="page">
+        <div id="content">
+            
+
+<p>
+Today we implement Quick Sort, and test different pivot values.
+</p>
+
+<p>
+Write your functions in a file named <code>tp4.c</code>.  This file should
+contain any dependency functions (like <code>print_int_array()</code> or <code>increasing()</code>)
+necessary to compile both the function you wrote, and the examples on this
+page.
+</p>
+
+<p>
+Since there exist so many way to write the partition function, the
+test program (<a href="https://algo.lrde.epita.fr/static/tp4trace.c"><code>tp4trace.c</code></a>) will not attempt to count the number of
+comparison operations performed by your implementation.  You therefore
+have more freedom to deviate (at your own risk!) from the algorithm
+presented in the course.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Partition</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">partition_cmp</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">b</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">e</span>,
+                       <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">p</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>));
+</pre>
+</div>
+
+<p>
+Write the function <code>partition_cmp()</code>.  It takes an array
+<code>tab[b..e-1]</code>, some pivot index <code>p</code>, and a comparison function <code>cmp</code>.
+The function should reorganize the array <code>tab[b..e-1]</code> and return an
+index <code>m</code> that satisfies <code>b&lt;m&lt;e</code> and such that all values in
+<code>tab[b..m-1]</code> are less than or equal to the former value of <code>tab[p]</code>,
+and all values in <code>tab[m..e-1]</code> are greater than or equal to the
+former value of <code>tab[p]</code>.
+</p>
+
+<p>
+(Of course, <i>less than</i> and <i>greater than</i> have to be understood
+in terms of the <code>cmp()</code> function.  <code>a</code> is less than or equal to <code>b</code>
+iff <code>cmp(a,b)&lt;=0</code>.)
+</p>
+
+<p>
+Here is an example where the same array of length 11 is partitioned
+with <code>p==0</code>, <code>p==5</code> or <code>p==10</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">p</span> = 0; p &lt;= 10; p += 5)
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">tab</span>[11] = { 2, 8, 42, 9, 13, 5, 3, 23, 40, -3, 55 };
+  printf(<span style="font-style: italic;">"p = %u  =&gt;  m = %u\n"</span>, p, partition_cmp(tab, 0, 11, p, increasing));
+  print_int_array(stdout, tab, 11);
+}
+</pre>
+</div>
+<pre class="example">p = 0  =&gt;  m = 1
+ [0] -3  8 42  9 13  5  3 23 40  2 55
+p = 5  =&gt;  m = 4
+ [0]  2 -3  3  5 13  9 42 23 40  8 55
+p = 10  =&gt;  m = 10
+ [0]  2  8 42  9 13  5  3 23 40 -3 55
+</pre>
+
+<p>
+Depending on your implementation, the value <code>m</code> returned may be
+slightly different (±1) than the one shown above, and the order of the
+array might also be different.  In any case, you should make sure that
+all values of index less than (resp. greater than or equal to) the
+returned <code>m</code> should be less than or equal to (resp. greater than or
+equal to) the value of <code>tab[p]</code> before the call.
+</p>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+Download <a href="https://algo.lrde.epita.fr/static/tp4trace.c"><code>tp4trace.c</code></a> and submit as usual:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace1">gcc -DQ=1 -std=c99 -Wall -Wextra tp4trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp4q1.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="tZvNwPwlrh9PjzCGMwObEipC0VmerO6OZMwiCTJ9frdMRDjYxgPoGhIaZCYyxu8X">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Choosing the pivot index</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Here are two functions to copy and paste in your source.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">pivot_first</span>(<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">l</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">r</span>,
+                     <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>))
+{
+  (<span style="font-weight: bold; text-decoration: underline;">void</span>) tab;
+  (<span style="font-weight: bold; text-decoration: underline;">void</span>) r;
+  (<span style="font-weight: bold; text-decoration: underline;">void</span>) cmp;
+  <span style="font-weight: bold;">return</span> l;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">pivot_rand</span>(<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">l</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">r</span>,
+                    <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>))
+{
+  (<span style="font-weight: bold; text-decoration: underline;">void</span>) tab;
+  <span style="font-weight: bold;">return</span> l + (rand() % (r - l));
+}
+</pre>
+</div>
+
+<p>
+They will be used later (in the <code>quick_sort_cmp()</code> function) to select the pivot passed
+to <code>partition_cmp()</code>.
+</p>
+
+<p>
+Write a third pivot function:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">pivot_median3</span>(<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">l</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">r</span>,
+                       <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>))
+</pre>
+</div>
+<p>
+This one should return the index of the median of the following
+three values: <code>tab[l]</code>, <code>tab[r-1]</code>, and <code>tab[l+(r-l)/2]</code>.
+</p>
+
+<p>
+The notion of median is obviously dependent on the <code>cmp</code> function.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">tab</span>[10] = { 30, 8, 42, 9, 13, -3, 3, 23, 40, 5 };
+printf(<span style="font-style: italic;">"p = %u\n"</span>, pivot_median3(tab, 0, 10, increasing));
+</pre>
+</div>
+
+<pre class="example">p = 9
+</pre>
+
+<p>
+In this example, the median of <code>tab[0]</code>, <code>tab[5]</code>, and <code>tab[9]</code>, is
+indeed <code>tab[9]</code>.
+</p>
+
+<p>
+<b>Submission</b>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace2">gcc -DQ=2 -std=c99 -Wall -Wextra tp4trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp4q2.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="tZvNwPwlrh9PjzCGMwObEipC0VmerO6OZMwiCTJ9frdMRDjYxgPoGhIaZCYyxu8X">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Generic Quick Sort</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Admire the following awesome prototype, and then implement
+the corresponding function.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">quick_sort_cmp</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>,
+                    <span style="font-weight: bold; text-decoration: underline;">unsigned</span> (*<span style="font-weight: bold; font-style: italic;">pivot</span>)(<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">l</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">r</span>,
+                                      <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)),
+                    <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>))
+</pre>
+</div>
+
+<p>
+This quick sort implementation takes a comparison function, but also
+a pivot selection function which itself takes a comparison function.
+</p>
+
+
+<p>
+Check on a few examples that you are effectively able to sort an array, in
+different orders, and with different pivot selection functions.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">tab</span>[10] = { 30, 8, 42, 9, 13, 5, 3, 23, 40, -3 };
+puts(<span style="font-style: italic;">"increasing"</span>);
+quick_sort_cmp(tab, 10, pivot_rand, increasing);
+print_int_array(stdout, tab, 10);
+puts(<span style="font-style: italic;">"decreasing"</span>);
+quick_sort_cmp(tab, 10, pivot_median3, decreasing);
+print_int_array(stdout, tab, 10);
+</pre>
+</div>
+<pre class="example">increasing
+[0] -3  3  5  8  9 13 23 30 40 42
+decreasing
+[0] 42 40 30 23 13  9  8  5  3 -3
+</pre>
+
+
+<p>
+Then evaluate the different pivot choices on a larger array:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">uintmax_t</span> <span style="font-weight: bold; font-style: italic;">cmp_count</span>;   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">include &lt;stdint.h&gt;</span>
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">my_decreasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   ++cmp_count;
+   <span style="font-weight: bold;">if</span> (a &lt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &gt; b;
+}
+
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold;">mycheck</span>(<span style="font-weight: bold; font-style: italic;">piv</span>, <span style="font-weight: bold; font-style: italic;">tab</span> )                                      \
+  {                                                             \
+    cmp_count = 0;                                              \
+    <span style="font-weight: bold; text-decoration: underline;">clock_t</span> <span style="font-weight: bold; font-style: italic;">before</span> = clock();                                   \
+    quick_sort_cmp(tab, tsize, pivot_##piv, my_decreasing);     \
+    <span style="font-weight: bold; text-decoration: underline;">clock_t</span> <span style="font-weight: bold; font-style: italic;">after</span> = clock();                                    \
+    printf(#piv <span style="font-style: italic;">" used %ju comparisons and %ju ticks\n"</span>,        \
+           cmp_count, (<span style="font-weight: bold; text-decoration: underline;">uintmax_t</span>) (after - before));            \
+  }
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+   srand(0);
+   <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">tsize</span> = 500000;
+   <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab1</span> = malloc(<span style="font-weight: bold; text-decoration: underline;">tsize</span> * <span style="font-weight: bold;">sizeof</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>));
+   <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab2</span> = malloc(<span style="font-weight: bold; text-decoration: underline;">tsize</span> * <span style="font-weight: bold;">sizeof</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>));
+   <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab3</span> = malloc(<span style="font-weight: bold; text-decoration: underline;">tsize</span> * <span style="font-weight: bold;">sizeof</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>));
+   <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt; tsize; ++i)
+     tab3[i] = tab2[i] = tab1[i] = rand(); <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">= i;</span>
+
+  mycheck(first, tab1);
+  mycheck(median3, tab2);
+  mycheck(rand, tab3);
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<pre class="example">first used 14658681 comparisons and 93927 ticks
+median3 used 13660357 comparisons and 73748 ticks
+rand used 14059281 comparisons and 80919 ticks
+</pre>
+
+<p>
+Multiple runs will likely give different results, and some of those
+only slightly better than <code>heap_sort()</code> evaluated yesterday in the
+same conditions.  It is sometimes hard to tell, because the precision
+of <code>clock()</code> depends on the architecture.
+</p>
+
+<p>
+Can you guess what will happen if you replace <code>rand()</code> by <code>i</code> in the
+loop filling the three arrays of the examples?  (Try to estimate a
+rough order of the time it will take before you actually try.)
+</p>
+
+<p>
+<b>Submission</b>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace3">gcc -DQ=3 -std=c99 -Wall -Wextra tp4trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp4q3.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="tZvNwPwlrh9PjzCGMwObEipC0VmerO6OZMwiCTJ9frdMRDjYxgPoGhIaZCYyxu8X">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Final submission</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Submit a file named <code>tp4.c</code> that contains all the functions above (and maybe more).
+</p>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="tZvNwPwlrh9PjzCGMwObEipC0VmerO6OZMwiCTJ9frdMRDjYxgPoGhIaZCYyxu8X">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+</body></html>

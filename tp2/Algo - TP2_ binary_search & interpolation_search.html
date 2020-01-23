@@ -1,0 +1,778 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0031)https://algo.lrde.epita.fr/t/2/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Algo - TP2: binary_search &amp; interpolation_search</title>
+<link href="./Algo - TP2_ binary_search &amp; interpolation_search_files/site.css" rel="stylesheet" type="text/css" media="screen">
+
+<script type="text/javascript" src="./Algo - TP2_ binary_search &amp; interpolation_search_files/MathJax.js.téléchargement"></script><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+
+<style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<div id="page-wrapper">
+    
+    <div id="header">
+        <div id="menu">
+            <ul>
+		<li>Makendy Piton</li>
+
+                <li><a href="https://algo.lrde.epita.fr/accounts/logout/">Logout</a></li>
+
+            </ul>
+        </div>
+        <h1><a href="https://algo.lrde.epita.fr/">TP2: binary_search &amp; interpolation_search</a></h1>
+    </div>
+    
+    <div id="page">
+        <div id="content">
+            
+
+<p>
+Before you start, make a copy of <code>tp1.c</code> and name it <code>tp2.c</code>.
+</p>
+
+<p>
+You will add new functions to <code>tp2.c</code>.  Some of those will rely on
+functions you wrote in the previous session, but we need all of
+those functions to be in the same file for the final submission.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Linear search</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Implement the following function, that searches for a value <code>val</code> in
+the array <code>tab</code> of length <code>count</code>, assuming this array has been
+previously sorted in the order induced by the comparison function
+<code>cmp</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">linear_search</span>(<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">val</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>));
+</pre>
+</div>
+
+<p>
+The search should consist in a linear scan from left to right, and
+should stop as soon as a value greater than or equal to <code>val</code> is
+found.
+</p>
+
+<p>
+If <code>val</code> is found in <code>tab</code>, <code>linear_search()</code> should return the index
+of this value.  Otherwise <code>linear_search()</code> should return the index of
+the smallest value that is greater than <code>val</code> in the array.  If <code>val</code>
+is greater than all values in <code>tab</code> (this is assumed to be the case if
+<code>count==0</code>) then the function should return <code>count</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">cmp_count</span>; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">number of comparisons performed</span>
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">increasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   ++cmp_count;
+   <span style="font-weight: bold;">if</span> (a &lt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &gt; b;
+}
+
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold;">my_test</span>(<span style="font-weight: bold; font-style: italic;">val</span>) \
+  cmp_count = 0; \
+  printf(<span style="font-style: italic;">"linear_search(a, %u, %d, increasing) = %u\n"</span>, \
+         asize, (val), linear_search(a, asize, (val), increasing)); \
+  printf(<span style="font-style: italic;">"\twith %u comparisons\n"</span>, cmp_count);
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = { 1, 2, 3, 4, 5, 6, 9, 12, 15, 20, 25, 35, 38, 40, 41 };
+  <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">asize</span> = <span style="font-weight: bold;">sizeof</span>(a) / <span style="font-weight: bold;">sizeof</span>(*a);
+  puts(<span style="font-style: italic;">"a[]:"</span>);
+  print_int_array(stdout, a, asize);
+  my_test(0);
+  my_test(6);
+  my_test(8);
+  my_test(41);
+  my_test(42);
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<pre class="example">a[]:
+ [0]  1  2  3  4  5  6  9 12 15 20 25 35 38 40 41
+linear_search(a, 15, 0, increasing) = 0
+	with 1 comparisons
+linear_search(a, 15, 6, increasing) = 5
+	with 6 comparisons
+linear_search(a, 15, 8, increasing) = 6
+	with 7 comparisons
+linear_search(a, 15, 41, increasing) = 14
+	with 15 comparisons
+linear_search(a, 15, 42, increasing) = 15
+	with 15 comparisons
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<p>
+Download <a href="https://algo.lrde.epita.fr/static/tp2trace.c"><code>tp2trace.c</code></a>, and submit the trace as usual:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace1">gcc -DQ=1 -std=c99 -Wall -Wextra tp2trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp2q1.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="zpPg7OFi2UoWcwqEnRqOVCspkrFUpiL55cQLdSS6Q4sTKA7W8Br1XBLXj8hevYNe">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Binary Search</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Implement the following function, that searches for a value <code>val</code> in
+the array <code>tab</code> of length <code>count</code>, assuming this array has been
+previously sorted in the order induced by the comparison function
+<code>cmp</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">binary_search</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>* <span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">val</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>));
+</pre>
+</div>
+
+<p>
+If <code>val</code> is in the array <code>tab</code>, <code>binary_search()</code> should return the
+index of this value in <code>tab</code>.  Otherwise, <code>binary_search()</code> should
+return the index of the smallest value that is greater than <code>val</code> in
+the table.  If <code>val</code> is greater than all values in <code>tab</code> (this is
+assumed to be the case if <code>count==0</code>) then the function should return
+<code>count</code>.
+</p>
+
+<p>
+The function should obviously implement a binary search.  We suggest
+you implement the iterative version you did this morning during the
+tutorial.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">cmp_count</span>;
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">increasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   ++cmp_count;
+   <span style="font-weight: bold;">if</span> (a &lt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &gt; b;
+}
+
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold;">my_test</span>(<span style="font-weight: bold; font-style: italic;">val</span>) \
+  cmp_count = 0; \
+  printf(<span style="font-style: italic;">"binary_search(a, %u, %d, increasing) = %u\n"</span>, \
+         asize, (val), binary_search(a, asize, (val), increasing)); \
+  printf(<span style="font-style: italic;">"\twith %u comparisons\n"</span>, cmp_count);
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = { 1, 2, 3, 4, 5, 6, 9, 12, 15, 20, 25, 35, 38, 40, 41 };
+  <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">asize</span> = <span style="font-weight: bold;">sizeof</span>(a) / <span style="font-weight: bold;">sizeof</span>(*a);
+  puts(<span style="font-style: italic;">"a[]:"</span>);
+  print_int_array(stdout, a, asize);
+  my_test(0);
+  my_test(6);
+  my_test(8);
+  my_test(41);
+  my_test(42);
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<pre class="example">a[]:
+ [0]  1  2  3  4  5  6  9 12 15 20 25 35 38 40 41
+binary_search(a, 15, 0, increasing) = 0
+	with 4 comparisons
+binary_search(a, 15, 6, increasing) = 5
+	with 3 comparisons
+binary_search(a, 15, 8, increasing) = 6
+	with 4 comparisons
+binary_search(a, 15, 41, increasing) = 14
+	with 4 comparisons
+binary_search(a, 15, 42, increasing) = 15
+	with 4 comparisons
+</pre>
+
+<p>
+Do note how the number of comparisons has changed between
+<code>linear_search()</code> and <code>binary_search()</code>, even if the example is the
+same.  If you get about twice the expected amount of comparisons, it
+probably means that you are calling <code>cmp()</code> twice for each iteration
+instead of doing a single call and using the returned value in two
+places.
+</p>
+
+<p>
+<b>Submission</b>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace2">gcc -DQ=2 -std=c99 -Wall -Wextra tp2trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp2q2.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="zpPg7OFi2UoWcwqEnRqOVCspkrFUpiL55cQLdSS6Q4sTKA7W8Br1XBLXj8hevYNe">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Insertion Sort with Binary Search</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">bs_insert_sort_cmp</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> *<span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>));
+</pre>
+</div>
+
+<p>
+Implement this variant of <code>insert_sort_cmp</code>, that is still sorting
+from left to right, but which is looking for the insertion position
+using <code>binary_search()</code>.  Once the insertion position is found,
+use <code>memmove()</code> to shift all the relevant values by one position.
+</p>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;stdint.h&gt;</span>
+
+<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; text-decoration: underline;">long</span> <span style="font-weight: bold; font-style: italic;">cmp_count</span>;
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">increasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   ++cmp_count;
+   <span style="font-weight: bold;">if</span> (a &lt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &gt; b;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+   srand(0);
+   <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">tsize</span> = 50000;
+   <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">tab1</span>[tsize];
+   <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">tab2</span>[tsize];
+   <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt; tsize; ++i)
+     tab1[i] = tab2[i] = rand();
+
+   cmp_count = 0;
+   <span style="font-weight: bold; text-decoration: underline;">clock_t</span> <span style="font-weight: bold; font-style: italic;">before</span> = clock();
+   insert_sort_cmp(tab1, tsize, increasing);
+   <span style="font-weight: bold; text-decoration: underline;">clock_t</span> <span style="font-weight: bold; font-style: italic;">after</span> = clock();
+   printf(<span style="font-style: italic;">"insertion_sort_cmp() took %zu comparisons and %ju ticks\n"</span>,
+          cmp_count, (<span style="font-weight: bold; text-decoration: underline;">uintmax_t</span>)(after - before));
+
+   cmp_count = 0;
+   before = clock();
+   bs_insert_sort_cmp(tab2, tsize, increasing);
+   after = clock();
+   printf(<span style="font-style: italic;">"bs_insertion_sort_cmp() took %zu comparisons and %ju ticks\n"</span>,
+          cmp_count, (<span style="font-weight: bold; text-decoration: underline;">uintmax_t</span>)(after - before));
+
+   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">The two arrays should of course be equal.</span>
+   assert(memcmp(tab1, tab2, <span style="font-weight: bold;">sizeof</span>(tab1)) == 0);
+   <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<pre class="example">insertion_sort_cmp() took 623931087 comparisons and 1613785 ticks
+bs_insertion_sort_cmp() took 711381 comparisons and 85668 ticks
+</pre>
+
+<p>
+Because of the call to <code>rand()</code>, and the time measurements, your
+output will be different, but the final assert should hold
+nonetheless.
+</p>
+
+<p>
+<b>Submission</b>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace3">gcc -DQ=3 -std=c99 -Wall -Wextra tp2trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp2q3.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="zpPg7OFi2UoWcwqEnRqOVCspkrFUpiL55cQLdSS6Q4sTKA7W8Br1XBLXj8hevYNe">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Interpolation Search, part 1</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+It is customary to state that Binary Search is what you do when
+looking up a word in a dictionary.  This is not exactly true.  When
+I'm searching for the word <i>apricate</i>, I do not open the dictionary in
+its middle: <a href="https://duckduckgo.com/?q=define+apricate"><del>I use a search engine</del></a> I know this word should be closer
+to the beginning of the dictionary, so I make a rough estimate of
+where this word should be, and start from there.
+</p>
+
+<p>
+In this question and the next one, we apply the same idea to the
+search of an integer in a sorted array.  We assume that the sorted
+values are uniformly distributed in the array, so by looking at the
+first value and the last value, we can estimate the average
+progression of the value in the array, and the expected position of
+the value we seek.  (Finding the actual formula is up to you, <b>but
+drawing a picture will help</b>.) At this expected position, you will
+either find the correct value, or be able to throw one part of the
+array and start again on the rest.
+</p>
+
+<p>
+Such a computation, which assumes that we can compute a distance
+between two values in the table, is not compatible with any comparison
+function <code>cmp</code>.  However it should work with increasing or decreasing
+sorts.
+</p>
+
+
+<p>
+Write the following function, that performs only the interpolation
+step.  It takes an array <code>tab</code>, two indices <code>b</code> and <code>e</code>, a value
+<code>val</code>, and a comparison function <code>cmp</code>.  The indices <code>b</code> and <code>e</code>
+represent the closed range of values of <code>tab</code> we are considering
+(<code>tab[b]</code> and <code>tab[e]</code> are both included).  From these arguments,
+you should first compute the slope between the points <code>(tab[b],b)</code> and
+<code>(tab[e],e)</code>, and then use this to figure out the index <code>i</code> where
+<code>val</code> should be: the point <code>(val,i)</code> should be on the line going
+through <code>(tab[b],b)</code> and <code>(tab[e],e)</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">interpolate</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> *<span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">b</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">e</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">val</span>,
+                     <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>));
+</pre>
+</div>
+
+<p>
+The returned value <code>r</code> should be adjusted to <b>always</b> satisfy <code>b&lt;=r&lt;=e</code>.
+</p>
+
+<p>
+In the particular case where <code>tab[b]==tab[e]&gt;=val</code>, the function
+should return <code>b</code>.  If <code>tab[b]==tab[e]&lt;val</code>, the function should
+return <code>e</code>.
+</p>
+
+<p>
+Beware that <code>b</code> and <code>e</code> can be very far apart: even if the returned
+value should lie between <code>b</code> and <code>e</code>, it is very likely that your
+intermediate computations will not fit in an <code>int</code>.
+</p>
+
+<p>
+Study the following example carefully:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">increasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   <span style="font-weight: bold;">if</span> (a &lt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &gt; b;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = {1, 2, 4, 7, 10, 10, 10, 14, 17, 18, 20 };
+  <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">asize</span> = <span style="font-weight: bold;">sizeof</span>(a) / <span style="font-weight: bold;">sizeof</span>(*a);
+  puts(<span style="font-style: italic;">"-- full range [0..10] --"</span>);
+  <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">val</span> = 0; val &lt;= 21; ++val)
+    printf(<span style="font-style: italic;">"interpolate(..., 0, %d, %d, ...) = %u\n"</span>, asize - 1, val,
+           interpolate(a, 0, asize - 1, val, increasing));
+  puts(<span style="font-style: italic;">"-- shorter range [6..10] --"</span>);
+  <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">val</span> = 0; val &lt;= 21; ++val)
+    printf(<span style="font-style: italic;">"interpolate(..., 6, %d, %d, ...) = %u\n"</span>, asize - 1, val,
+           interpolate(a, 6, asize - 1, val, increasing));
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<pre class="example">-- full range [0..10] --
+interpolate(..., 0, 10, 0, ...) = 0
+interpolate(..., 0, 10, 1, ...) = 0
+interpolate(..., 0, 10, 2, ...) = 1
+interpolate(..., 0, 10, 3, ...) = 1
+interpolate(..., 0, 10, 4, ...) = 2
+interpolate(..., 0, 10, 5, ...) = 2
+interpolate(..., 0, 10, 6, ...) = 3
+interpolate(..., 0, 10, 7, ...) = 3
+interpolate(..., 0, 10, 8, ...) = 4
+interpolate(..., 0, 10, 9, ...) = 4
+interpolate(..., 0, 10, 10, ...) = 5
+interpolate(..., 0, 10, 11, ...) = 5
+interpolate(..., 0, 10, 12, ...) = 6
+interpolate(..., 0, 10, 13, ...) = 6
+interpolate(..., 0, 10, 14, ...) = 7
+interpolate(..., 0, 10, 15, ...) = 7
+interpolate(..., 0, 10, 16, ...) = 8
+interpolate(..., 0, 10, 17, ...) = 8
+interpolate(..., 0, 10, 18, ...) = 9
+interpolate(..., 0, 10, 19, ...) = 9
+interpolate(..., 0, 10, 20, ...) = 10
+interpolate(..., 0, 10, 21, ...) = 10
+-- shorter range [6..10] --
+interpolate(..., 6, 10, 0, ...) = 6
+interpolate(..., 6, 10, 1, ...) = 6
+interpolate(..., 6, 10, 2, ...) = 6
+interpolate(..., 6, 10, 3, ...) = 6
+interpolate(..., 6, 10, 4, ...) = 6
+interpolate(..., 6, 10, 5, ...) = 6
+interpolate(..., 6, 10, 6, ...) = 6
+interpolate(..., 6, 10, 7, ...) = 6
+interpolate(..., 6, 10, 8, ...) = 6
+interpolate(..., 6, 10, 9, ...) = 6
+interpolate(..., 6, 10, 10, ...) = 6
+interpolate(..., 6, 10, 11, ...) = 6
+interpolate(..., 6, 10, 12, ...) = 7
+interpolate(..., 6, 10, 13, ...) = 7
+interpolate(..., 6, 10, 14, ...) = 8
+interpolate(..., 6, 10, 15, ...) = 8
+interpolate(..., 6, 10, 16, ...) = 8
+interpolate(..., 6, 10, 17, ...) = 9
+interpolate(..., 6, 10, 18, ...) = 9
+interpolate(..., 6, 10, 19, ...) = 10
+interpolate(..., 6, 10, 20, ...) = 10
+interpolate(..., 6, 10, 21, ...) = 10
+</pre>
+
+<p>
+Here is another example where the array contains duplicates, and with
+a comparison function that sorts the array in decreasing order.  (<code>2</code> should
+therefore be estimated at the end of the array, and <code>4</code> should be estimated
+at the beginning.)
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">decreasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   <span style="font-weight: bold;">if</span> (a &gt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &lt; b;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = { 3, 3, 3, 3, 3 };
+  <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">val</span> = 2; val &lt;= 4; ++val)
+    printf(<span style="font-style: italic;">"interpolate(...,%d,...) = %u\n"</span>, val,
+           interpolate(a, 0, 4, val, decreasing));
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+
+<pre class="example">interpolate(...,2,...) = 4
+interpolate(...,3,...) = 0
+interpolate(...,4,...) = 0
+</pre>
+
+<p>
+<b>Submission</b>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace4">gcc -DQ=4 -std=c99 -Wall -Wextra tp2trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp2q4.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="zpPg7OFi2UoWcwqEnRqOVCspkrFUpiL55cQLdSS6Q4sTKA7W8Br1XBLXj8hevYNe">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Interpolation Search, part 2</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Now you are ready to implement the following function, that uses <code>interpolate()</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold;">interpolation_search</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> *<span style="font-weight: bold; font-style: italic;">tab</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">count</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">val</span>,
+                              <span style="font-weight: bold; text-decoration: underline;">int</span> (*<span style="font-weight: bold; font-style: italic;">cmp</span>)(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>));
+</pre>
+</div>
+
+<p>
+The body of this function should be nearly identical to that of <code>binary_search</code>.
+The only difference should be that the index for probing the array is not
+the middle of the range, but the value returned by calling <code>interpolate()</code> on
+that range.
+</p>
+
+<p>
+This function should have the same output as <code>linear_search()</code> or
+<code>binary_search()</code>, but it will obviously make a different number of
+comparisons.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">cmp_count</span>;
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">increasing</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>)
+{
+   ++cmp_count;
+   <span style="font-weight: bold;">if</span> (a &lt; b)
+     <span style="font-weight: bold;">return</span> -1;
+   <span style="font-weight: bold;">return</span> a &gt; b;
+}
+
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold;">my_test</span>(<span style="font-weight: bold; font-style: italic;">val</span>) \
+  cmp_count = 0; \
+  printf(<span style="font-style: italic;">"interpolation_search(a, %u, %d, increasing) = %u\n"</span>, \
+         asize, (val), interpolation_search(a, asize, (val), increasing)); \
+  printf(<span style="font-style: italic;">"\twith %u comparisons\n"</span>, cmp_count);
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>[] = { 1, 2, 3, 4, 5, 6, 9, 12, 15, 20, 25, 35, 38, 40, 41 };
+  <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">asize</span> = <span style="font-weight: bold;">sizeof</span>(a) / <span style="font-weight: bold;">sizeof</span>(*a);
+  puts(<span style="font-style: italic;">"a[]:"</span>);
+  print_int_array(stdout, a, asize);
+  my_test(0);
+  my_test(6);
+  my_test(8);
+  my_test(20);
+  my_test(41);
+  my_test(42);
+  my_test(-2147483647 - 1);
+  my_test(2147483647);
+}
+</pre>
+</div>
+
+<pre class="example">a[]:
+ [0]  1  2  3  4  5  6  9 12 15 20 25 35 38 40 41
+interpolation_search(a, 15, 0, increasing) = 0
+	with 1 comparisons
+interpolation_search(a, 15, 6, increasing) = 5
+	with 3 comparisons
+interpolation_search(a, 15, 8, increasing) = 6
+	with 5 comparisons
+interpolation_search(a, 15, 20, increasing) = 9
+	with 2 comparisons
+interpolation_search(a, 15, 41, increasing) = 14
+	with 1 comparisons
+interpolation_search(a, 15, 42, increasing) = 15
+	with 1 comparisons
+interpolation_search(a, 15, -2147483648, increasing) = 0
+	with 1 comparisons
+interpolation_search(a, 15, 2147483647, increasing) = 15
+	with 1 comparisons
+</pre>
+
+<p>
+(The number of comparisons you do may vary slightly.)
+</p>
+
+<p>
+<b>Submission</b>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="trace5">gcc -DQ=5 -std=c99 -Wall -Wextra tp2trace.c -lm -O2 -o trace
+./trace
+</pre>
+</div>
+<pre class="example">please submit 'tp2q5.trace'
+</pre>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="zpPg7OFi2UoWcwqEnRqOVCspkrFUpiL55cQLdSS6Q4sTKA7W8Br1XBLXj8hevYNe">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Final submission</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Submit a file named <code>tp2.c</code> that contains at least the above five functions and all their non-standard dependencies.  (It may contain more.)
+</p>
+
+<span id="submit-form">
+<form action="https://algo.lrde.epita.fr/" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="zpPg7OFi2UoWcwqEnRqOVCspkrFUpiL55cQLdSS6Q4sTKA7W8Br1XBLXj8hevYNe">
+
+
+<label for="id_file">File:</label>
+<input id="id_file" name="file" type="file" required="">
+<input type="submit" value="Submit">
+</form>
+</span>
+
+</div>
+</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+</body></html>

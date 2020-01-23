@@ -1,0 +1,225 @@
+body {
+  margin: 10px;
+  margin-right: 10px;
+  font-family: Arial, sans-serif;
+}
+
+
+div.footer a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  text-decoration: none;
+  color: white;
+}
+
+#header {
+  background-color: #9eccf4;
+  color: #ffffff;
+  margin-left: -10px;
+  margin-right: -10px;
+  align: right;
+}
+
+.sourcesub{
+  text-align: center;
+}
+
+
+.between-halves {
+    width: 2cm;
+    text-align: center;
+}
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+}
+.button:hover {
+    background-color: #3C9F40; /* Green */
+}
+
+#submit-form {
+    border-width: 1px;
+    border-style: solid;
+    display: inline-block;
+    padding: 5px;
+    margin-bottom: 1em;
+}
+
+a.tlink {
+ display: block;
+ text-decoration: none;
+ color: black;
+ padding: 0px 1em;
+}
+
+a.tlink:hover{
+  background-color: #FFEEAA;
+}
+
+a.sum {
+ display: block;
+ text-decoration: none;
+ color: black;
+ padding: 0ex 0ex;
+}
+
+#menu {
+  float: right
+}
+
+#menu li {
+  display: inline;
+  list-style-type:none;
+  padding-right: 20px;
+}
+
+#menu li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+table#tps {
+  border-style: solid;
+  border-width: 1px;
+  border-spacing: 0px 5px;
+  border-collapse: collapse;
+}
+
+table.subs {
+  border-style: solid none;
+  border-width: 1px;
+  border-spacing: 0px 5px;
+}
+
+table.subs td {
+  padding: 0px 0px;
+}
+
+tr.tp {
+    background-color: #9eccf4;
+    border-top-style: solid;
+    border-top-width: 1px;
+    font-weight: bold;
+}
+
+td {
+    padding: 2px 0px;
+}
+
+tr.tp td {
+    padding: 4px 0px;
+}
+
+
+
+h1 {
+  text-align: left;
+  background-color: #9eccf4;
+  color: #ffffff;
+  margin-top: -10px;
+  /* border-bottom: solid thin black; */
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  background-color: #9eccf4;
+  color: white;
+  padding: 5px;
+  text-shadow: 4px 4px 4px #7496B3;
+}
+
+pre#subtxt {
+  background-color: #dddddd;
+  display: inline-block;
+  padding: 1ex;
+}
+
+.statusNO {
+  background-color: #ffa0a0;
+}
+
+.statusOK {
+  background-color: #a0ffa0;
+}
+
+table.diff {font-family:monospace;border:solid; border-width: 1px;}
+        .diff_header {background-color:#e0e0e0}
+        td.diff_header {text-align:right}
+        .diff_next {background-color:#c0c0c0}
+        .diff_add {background-color:#aaffaa}
+        .diff_chg {background-color:#ffff77}
+        .diff_sub {background-color:#ffaaaa}
+
+.org-src-container{
+  background-color: #dddddd;
+  display: block;
+  padding: 0px 1em;
+}
+
+.example {
+  background-color: #eeeeee;
+  display: block;
+  padding: 0px 1em;
+}
+
+
+table#summary {
+  border-collapse: collapse;
+}
+
+table#summary td {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #CCCCCC;
+}
+
+table#summary td.src {
+    border: none;
+    padding: 0px .5ex;
+    font-weight: bold;
+}
+
+table#summary th.skew {
+    height: 60px;
+    width: 35px;
+    position: relative;
+    vertical-align: bottom;
+}
+
+table#summary th.skew > div {
+    position: relative;
+    top: 0px;
+    left: 30px;
+    height: 100%;
+    transform:skew(-45deg,0deg);
+    -ms-transform:skew(-45deg,0deg);
+    -moz-transform:skew(-45deg,0deg);
+    -webkit-transform:skew(-45deg,0deg);
+    -o-transform:skew(-45deg,0deg);
+    overflow: hidden;
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+
+table#summary th.skew span {
+    transform:skew(45deg,0deg) rotate(315deg);
+    -ms-transform:skew(45deg,0deg) rotate(315deg);
+    -moz-transform:skew(45deg,0deg) rotate(315deg);
+    -webkit-transform:skew(45deg,0deg) rotate(315deg);
+    -o-transform:skew(45deg,0deg) rotate(315deg);
+    position: absolute;
+    bottom: 15px;
+    left: 1px;
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+}

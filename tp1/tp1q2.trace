@@ -1,0 +1,15 @@
+tp1q2
+1000
+13498059
+2018-10-22 16:11:55
+a[] = { 1, -1598, -7, -2, 237931, 4896, -3664973, -15411, -4147160, 167067202, 688 }
+ints_width(a, 1) == 1
+ints_width(a, 2) == 5
+ints_width(a, 3) == 5
+ints_width(a, 4) == 5
+ints_width(a, 5) == 6
+ints_width(a, 6) == 6
+ints_width(a, 7) == 8
+ints_width(a, 8) == 8
+ints_width(a, 9) == 8
+ints_width(a, 10) == 9
